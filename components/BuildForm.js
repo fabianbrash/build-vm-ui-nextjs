@@ -100,9 +100,9 @@ function BuildForm() {
             setDS(data.ds);
             setHosts(data.hosts);
             setTemplates(data.templates);
-        },[])
+        })
 
-    });
+    },[]);
 
     const handleChange = e => {
         console.log(e);
