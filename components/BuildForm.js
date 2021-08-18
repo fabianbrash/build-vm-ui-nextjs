@@ -70,12 +70,19 @@ createServer({
 
 function BuildForm() {
 
-    const [formData, setFormData] = useState({});
+    const [formData, setFormData] = useState({
+      vmName: '',
+      clusterSelect: '',
+      datastoreSelect: '',
+      hostSelect: '',
+      templateSelect: '',
+    });
     const [clusters, setClusters] = useState([]);
     const [ds, setDS] = useState([]);
     const [hosts, setHosts] = useState([]);
     const [templates, setTemplates] = useState([]);
     const [payload, setPayload] = useState('');
+    const formRef = useRef(null);
 
 
     useEffect(() => {
@@ -91,7 +98,7 @@ function BuildForm() {
     },[]);
 
     const handleChange = e => {
-        console.log(e);
+        //console.log(e);
         /*const { name, value } = e.target;
         if(name === 'cluster-select') setCluster(value);
         if(name === 'datastore-select') setDatastore(value);
@@ -107,30 +114,34 @@ function BuildForm() {
 
         setFormData(newFormData);
 
+
+        const payLoadData = {
+          guest_customization_spec: {
+              name: "Srv19"
+          },
+          name: newFormData.vmName,
+          placement: {
+              cluster: newFormData.clusterSelect,
+              datastore: newFormData.datastoreSelect,
+              host: newFormData.hostSelect
+          },
+          power_on: true,
+          source: newFormData.templateSelect
+      }
+  
+      setPayload(JSON.stringify(payLoadData),null, 1);
+
     }
 
     const handleClick = () => {
-      
-      const payLoadData = {
-        guest_customization_spec: {
-            name: "Srv19"
-        },
-        name: formData.vmName,
-        placement: {
-            cluster: formData.clusterSelect,
-            datastore: formData.datastoreSelect,
-            host: formData.hostSelect
-        },
-        power_on: true,
-        source: formData.templateSelect
-    }
-
-    setPayload(JSON.stringify(payLoadData),null, 1);
 
   }
   
   const handleReset = () => {
     setPayload('');
+    setFormData({});
+    formRef.current.reset();
+
   }
 
     return (
@@ -139,6 +150,7 @@ function BuildForm() {
     
         <Flex direction="column" background="gray.100" p={20} rounded={6} w="60%" boxShadow="2xl">
         <Heading textTransform="uppercase" mb={6} textAlign="center">Build VM</Heading>
+        <form name="buildVM" ref={formRef}>
         <Box p={4} textTransform="uppercase">
         <FormControl id="vm-name" isRequired>
           <FormLabel textAlign="center">VM Name</FormLabel>
@@ -148,7 +160,7 @@ function BuildForm() {
         <Box p={4} textTransform="uppercase">
         <FormControl id="cluster-select" isRequired>
           <FormLabel textAlign="center">Cluster Selection</FormLabel>
-          <Select placeholder="Select a Cluster" onChange={handleChange} name="clusterSelect" value={formData.clusterSelect}>
+          <Select placeholder="Select a Cluster" onInput={handleChange} name="clusterSelect" value={formData.clusterSelect}>
               {clusters && clusters.map(cluster => (
                  <option key={cluster.id}>{cluster.name}</option>
               ))}
@@ -191,6 +203,7 @@ function BuildForm() {
           </Select>
         </FormControl>
         </Box>
+        </form>
     
         <Box d="flex" p={12} alignItems="center" justifyContent="center">
           <Button mr={8} colorScheme="teal" 
