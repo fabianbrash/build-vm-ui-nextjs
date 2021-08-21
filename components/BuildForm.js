@@ -5,10 +5,10 @@ import { Flex, Spacer,
     FormErrorMessage,
     FormHelperText,
     Input, Select, Box, Button, Heading, Code } from "@chakra-ui/react"
-    import { createServer } from "miragejs";
+    //import { createServer } from "miragejs";
 
 
-createServer({
+/*createServer({
   routes() {
     this.get("/api/v1/resources", () => ({
       cluster: [
@@ -65,7 +65,7 @@ createServer({
       ],
     }))
   },
-})
+})*/
 
 
 function BuildForm() {
@@ -86,7 +86,7 @@ function BuildForm() {
 
 
     useEffect(() => {
-        fetch('/api/v1/resources')
+        fetch('https://fabianbrash.npkn.net/vm-build-data')
         .then(res => res.json())
         .then(data => {
             setClusters(data.cluster);
