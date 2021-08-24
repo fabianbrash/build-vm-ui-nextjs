@@ -139,14 +139,20 @@ function BuildForm() {
   
   const handleReset = () => {
     setPayload('');
-    setFormData({});
+    setFormData({
+      vmName: '',
+      clusterSelect: '',
+      datastoreSelect: '',
+      hostSelect: '',
+      templateSelect: '',
+    });
     formRef.current.reset();
 
   }
 
     return (
 
-        <Flex height="100vh" justifyContent="center" alignItems="center" w="100%" mb={20} mt={10}>
+        <Flex height="100vh" justifyContent="center" alignItems="center" w="100%" mb={20} mt={18}>
     
         <Flex direction="column" background="gray.100" p={20} rounded={6} w="60%" boxShadow="2xl">
         <Heading textTransform="uppercase" mb={6} textAlign="center">Build VM</Heading>
@@ -222,7 +228,7 @@ function BuildForm() {
             Build!
           </Button>
         </Box>
-        <Box height="100px">
+        <Box>
           <Code>
             {payload && payload}
           </Code>
