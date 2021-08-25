@@ -159,23 +159,23 @@ function BuildForm() {
 
     return (
 
-        <Flex height="100vh" justifyContent="center" alignItems="center" w="100%" mb={20} mt={18}>
+        <Flex justifyContent="center" alignItems="center" w="100%" mb={["0px","20px"]} mt={["0px", "10px"]}>
     
         { loading ? (
             <Spinner size="xl" color="purple.800" />
         ) : (
-          <Flex direction="column" background="gray.100" p={20} rounded={7} w="60%" boxShadow="2xl">
+          <Flex direction="column" background="gray.100" p={20} rounded={["null","lg"]} w={["100%", "60%"]} boxShadow="2xl">
           <Heading textTransform="uppercase" mb={6} textAlign="center">Build VM</Heading>
           <form name="buildVM" ref={formRef}>
           <Box p={4} textTransform="uppercase">
           <FormControl id="vm-name" isRequired>
-            <FormLabel textAlign="center">VM Name</FormLabel>
+            <FormLabel textAlign="center" fontSize={["sm","md"]}>VM Name</FormLabel>
             <Input type="text" variant="flushed" onInput={handleChange} placeholder="VM Name" name="vmName" value={formData.vmName} textAlign="center"/>
           </FormControl>
           </Box>
           <Box p={4} textTransform="uppercase">
           <FormControl id="cluster-select" isRequired>
-            <FormLabel textAlign="center">Cluster Selection</FormLabel>
+            <FormLabel textAlign="center" fontSize={["xs","md"]}>Cluster Selection</FormLabel>
             <Select placeholder="Select a Cluster" onInput={handleChange} name="clusterSelect" value={formData.clusterSelect}>
                 {clusters && clusters.map(cluster => (
                    <option key={cluster.id}>{cluster.name}</option>
@@ -186,7 +186,7 @@ function BuildForm() {
           </Box>
           <Box p={4} textTransform="uppercase">
           <FormControl id="datastore-select" isRequired>
-            <FormLabel textAlign="center">Datastore Selection</FormLabel>
+            <FormLabel textAlign="center" fontSize={["xs","md"]}>Datastore Selection</FormLabel>
             <Select placeholder="Select a Datastore" onChange={handleChange} name="datastoreSelect" value={formData.datastoreSelect}>
                 {ds && ds.map(datastore => ( 
                   <option key={datastore.id}>{datastore.name}</option>
@@ -197,7 +197,7 @@ function BuildForm() {
           </Box>
           <Box p={4} textTransform="uppercase">
            <FormControl id="host-select" isRequired>
-            <FormLabel textAlign="center">Host Selection</FormLabel>
+            <FormLabel textAlign="center" fontSize={["xs","md"]}>Host Selection</FormLabel>
             <Select placeholder="Select a Host" onChange={handleChange} name="hostSelect" value={formData.hostSelect}>
                 {hosts && hosts.map(host => ( 
                     <option key={host.id}>{host.name}</option>
@@ -209,7 +209,7 @@ function BuildForm() {
           </Box>
           <Box p={4} textTransform="uppercase">
           <FormControl id="template-select" isRequired>
-            <FormLabel textAlign="center">Select Template</FormLabel>
+            <FormLabel textAlign="center" fontSize={["xs","md"]}>Select Template</FormLabel>
             <Select placeholder="Select a Template" onChange={handleChange} name="templateSelect" value={formData.templateSelect}>
                 {templates && templates.map(template => ( 
                     <option key={template.id}>{template.name}</option>
@@ -221,7 +221,7 @@ function BuildForm() {
           </Box>
           </form>
       
-          <Box d="flex" p={12} alignItems="center" justifyContent="center">
+          <Box d="flex" p={["0px","12px"]} alignItems="center" justifyContent="center">
             <Button mr={8} colorScheme="teal" 
             justifyContent="center" 
             textTransform="uppercase" 
@@ -238,8 +238,8 @@ function BuildForm() {
               Build!
             </Button>
           </Box>
-          <Box>
-            <Code>
+          <Box overflow={["hidden"]} w={["100%"]}>
+            <Code fontSize={["xs","md"]}>
               {payload && payload}
             </Code>
               
