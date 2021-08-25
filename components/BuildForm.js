@@ -4,7 +4,7 @@ import { Flex, Spacer,
     FormLabel,
     FormErrorMessage,
     FormHelperText,
-    Input, Select, Box, Button, Heading, Code } from "@chakra-ui/react"
+    Input, Select, Box, Button, Heading, Code, Spinner } from "@chakra-ui/react"
     //import { createServer } from "miragejs";
 
 
@@ -83,9 +83,12 @@ function BuildForm() {
     const [templates, setTemplates] = useState([]);
     const [payload, setPayload] = useState('');
     const formRef = useRef(null);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
 
 
     useEffect(() => {
+        setLoading(true);
         fetch('https://fabianbrash.npkn.net/vm-build-data')
         .then(res => res.json())
         .then(data => {
@@ -93,6 +96,10 @@ function BuildForm() {
             setDS(data.ds);
             setHosts(data.hosts);
             setTemplates(data.templates);
+        }).catch(err => {
+          setError(err);
+        }).finally(() => {
+          setLoading(false);
         })
 
     },[]);
@@ -154,91 +161,94 @@ function BuildForm() {
 
         <Flex height="100vh" justifyContent="center" alignItems="center" w="100%" mb={20} mt={18}>
     
-        <Flex direction="column" background="gray.100" p={20} rounded={6} w="60%" boxShadow="2xl">
-        <Heading textTransform="uppercase" mb={6} textAlign="center">Build VM</Heading>
-        <form name="buildVM" ref={formRef}>
-        <Box p={4} textTransform="uppercase">
-        <FormControl id="vm-name" isRequired>
-          <FormLabel textAlign="center">VM Name</FormLabel>
-          <Input type="text" variant="flushed" onInput={handleChange} placeholder="VM Name" name="vmName" value={formData.vmName} textAlign="center"/>
-        </FormControl>
-        </Box>
-        <Box p={4} textTransform="uppercase">
-        <FormControl id="cluster-select" isRequired>
-          <FormLabel textAlign="center">Cluster Selection</FormLabel>
-          <Select placeholder="Select a Cluster" onInput={handleChange} name="clusterSelect" value={formData.clusterSelect}>
-              {clusters && clusters.map(cluster => (
-                 <option key={cluster.id}>{cluster.name}</option>
-              ))}
+        { loading ? (
+            <Spinner size="xl" color="purple.800" />
+        ) : (
+          <Flex direction="column" background="gray.100" p={20} rounded={7} w="60%" boxShadow="2xl">
+          <Heading textTransform="uppercase" mb={6} textAlign="center">Build VM</Heading>
+          <form name="buildVM" ref={formRef}>
+          <Box p={4} textTransform="uppercase">
+          <FormControl id="vm-name" isRequired>
+            <FormLabel textAlign="center">VM Name</FormLabel>
+            <Input type="text" variant="flushed" onInput={handleChange} placeholder="VM Name" name="vmName" value={formData.vmName} textAlign="center"/>
+          </FormControl>
+          </Box>
+          <Box p={4} textTransform="uppercase">
+          <FormControl id="cluster-select" isRequired>
+            <FormLabel textAlign="center">Cluster Selection</FormLabel>
+            <Select placeholder="Select a Cluster" onInput={handleChange} name="clusterSelect" value={formData.clusterSelect}>
+                {clusters && clusters.map(cluster => (
+                   <option key={cluster.id}>{cluster.name}</option>
+                ))}
+              
+            </Select>
+          </FormControl>
+          </Box>
+          <Box p={4} textTransform="uppercase">
+          <FormControl id="datastore-select" isRequired>
+            <FormLabel textAlign="center">Datastore Selection</FormLabel>
+            <Select placeholder="Select a Datastore" onChange={handleChange} name="datastoreSelect" value={formData.datastoreSelect}>
+                {ds && ds.map(datastore => ( 
+                  <option key={datastore.id}>{datastore.name}</option>
+                ))}
+              
+            </Select>
+          </FormControl>
+          </Box>
+          <Box p={4} textTransform="uppercase">
+           <FormControl id="host-select" isRequired>
+            <FormLabel textAlign="center">Host Selection</FormLabel>
+            <Select placeholder="Select a Host" onChange={handleChange} name="hostSelect" value={formData.hostSelect}>
+                {hosts && hosts.map(host => ( 
+                    <option key={host.id}>{host.name}</option>
+                ))}
+              
+              
+            </Select>
+          </FormControl>
+          </Box>
+          <Box p={4} textTransform="uppercase">
+          <FormControl id="template-select" isRequired>
+            <FormLabel textAlign="center">Select Template</FormLabel>
+            <Select placeholder="Select a Template" onChange={handleChange} name="templateSelect" value={formData.templateSelect}>
+                {templates && templates.map(template => ( 
+                    <option key={template.id}>{template.name}</option>
+                ))}
+              
+              
+            </Select>
+          </FormControl>
+          </Box>
+          </form>
+      
+          <Box d="flex" p={12} alignItems="center" justifyContent="center">
+            <Button mr={8} colorScheme="teal" 
+            justifyContent="center" 
+            textTransform="uppercase" 
+            alignItems="center"
+            variant="outline"
+            onClick={handleReset}>
+              Reset
+            </Button>
+            <Button colorScheme="teal" 
+            textTransform="uppercase" 
+            alignItems="center"
+            variant="outline"
+            onClick={handleClick}>
+              Build!
+            </Button>
+          </Box>
+          <Box>
+            <Code>
+              {payload && payload}
+            </Code>
+              
+          </Box>
             
-          </Select>
-        </FormControl>
-        </Box>
-        <Box p={4} textTransform="uppercase">
-        <FormControl id="datastore-select" isRequired>
-          <FormLabel textAlign="center">Datastore Selection</FormLabel>
-          <Select placeholder="Select a Datastore" onChange={handleChange} name="datastoreSelect" value={formData.datastoreSelect}>
-              {ds && ds.map(datastore => ( 
-                <option key={datastore.id}>{datastore.name}</option>
-              ))}
-            
-          </Select>
-        </FormControl>
-        </Box>
-        <Box p={4} textTransform="uppercase">
-         <FormControl id="host-select" isRequired>
-          <FormLabel textAlign="center">Host Selection</FormLabel>
-          <Select placeholder="Select a Host" onChange={handleChange} name="hostSelect" value={formData.hostSelect}>
-              {hosts && hosts.map(host => ( 
-                  <option key={host.id}>{host.name}</option>
-              ))}
-            
-            
-          </Select>
-        </FormControl>
-        </Box>
-        <Box p={4} textTransform="uppercase">
-        <FormControl id="template-select" isRequired>
-          <FormLabel textAlign="center">Select Template</FormLabel>
-          <Select placeholder="Select a Template" onChange={handleChange} name="templateSelect" value={formData.templateSelect}>
-              {templates && templates.map(template => ( 
-                  <option key={template.id}>{template.name}</option>
-              ))}
-            
-            
-          </Select>
-        </FormControl>
-        </Box>
-        </form>
-    
-        <Box d="flex" p={12} alignItems="center" justifyContent="center">
-          <Button mr={8} colorScheme="teal" 
-          justifyContent="center" 
-          textTransform="uppercase" 
-          alignItems="center"
-          variant="outline"
-          onClick={handleReset}>
-            Reset
-          </Button>
-          <Button colorScheme="teal" 
-          textTransform="uppercase" 
-          alignItems="center"
-          variant="outline"
-          onClick={handleClick}>
-            Build!
-          </Button>
-        </Box>
-        <Box>
-          <Code>
-            {payload && payload}
-          </Code>
-            
-        </Box>
-          
-        </Flex>
-      </Flex>
-            
-      )
+          </Flex>
+          )}
+      </Flex>       
+    )
 }
 
 export default BuildForm
