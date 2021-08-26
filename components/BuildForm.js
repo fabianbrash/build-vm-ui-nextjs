@@ -83,12 +83,12 @@ function BuildForm() {
     const [templates, setTemplates] = useState([]);
     const [payload, setPayload] = useState('');
     const formRef = useRef(null);
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
 
     useEffect(() => {
-        setLoading(true);
+        //setLoading(true);
         fetch('https://fabianbrash.npkn.net/vm-build-data')
         .then(res => res.json())
         .then(data => {
