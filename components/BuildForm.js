@@ -159,7 +159,7 @@ function BuildForm() {
 
     return (
 
-        <Flex justifyContent="center" alignItems="center" w="100%" mb={["0px","20px"]} mt={["0px", "10px"]}>
+        <Flex justifyContent="center" alignItems="center" w="100%" mb={["0px","20px"]} mt={["0px", "30px"]}>
     
         { loading ? (
             <Spinner size="xl" color="purple.800" />
@@ -238,7 +238,7 @@ function BuildForm() {
               Build!
             </Button>
           </Box>
-          <Box overflow={["hidden"]} w={["100%"]}>
+          <Box overflow={["hidden"]} w={["100%"]} display={["none", "block"]}>
             <Code fontSize={["xs","md"]}>
               {payload && payload}
             </Code>
