@@ -81,6 +81,12 @@ function BuildForm() {
     const [ds, setDS] = useState([]);
     const [hosts, setHosts] = useState([]);
     const [templates, setTemplates] = useState([]);
+    const [apiData, setApiData] = useState({
+      theClusters: [],
+      theDataStores: [],
+      theHosts: [],
+      theTemplates: [],
+    });
     const [payload, setPayload] = useState('');
     const formRef = useRef(null);
     const [loading, setLoading] = useState(true);
